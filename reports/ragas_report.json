@@ -1,0 +1,181 @@
+{
+  "aggregate": {
+    "faithfulness": 0.7875,
+    "answer_relevancy": 0.617601275048172,
+    "context_precision": 0.9749999999325002,
+    "context_recall": 0.925
+  },
+  "num_questions": 20,
+  "failures": [
+    {
+      "question": "Nếu cần mua một chiếc laptop 30 triệu cho nhân viên mới, ai phê duyệt và cần gì từ phòng CNTT?",
+      "answer": "Giám đốc phòng ban sẽ phê duyệt đơn hàng vì giá trị đơn hàng là 30 triệu VNĐ. Cần có xác nhận của phòng CNTT về cấu hình kỹ thuật của laptop trước khi đề xuất.",
+      "ground_truth": "Laptop 30 triệu nằm trong khoảng 5-50 triệu nên cần Giám đốc phòng ban (Director) phê duyệt. Ngoài ra, mua sắm thiết bị CNTT cần có xác nhận cấu hình kỹ thuật từ phòng CNTT trước khi đề xuất. Cần đính kèm ít nhất 3 báo giá vì trên 10 triệu.",
+      "worst_metric": "answer_relevancy",
+      "score": 0.0,
+      "avg_score": 0.625,
+      "metrics": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.0,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 3,
+      "diagnosis": "Answer doesn't match question — trả lời lạc đề hoặc quá chung chung",
+      "suggested_fix": "Sửa prompt template (yêu cầu trả lời trực tiếp, đúng đơn vị/con số), thêm few-shot example, xử lý riêng câu hỏi multi-hop / phủ định"
+    },
+    {
+      "question": "Khi phát hiện malware trên máy, nhân viên có nên tự xử lý không?",
+      "answer": "Không. Nhân viên tuyệt đối **không tự ý xử lý malware** hoặc tìm cách khắc phục mà không có sự hướng dẫn của đội CNTT.",
+      "ground_truth": "KHÔNG. Nhân viên tuyệt đối không được tự ý xử lý malware. Phải báo cáo trong vòng 1 giờ qua helpdesk@cty.vn hoặc hotline CNTT. Tự ý xử lý bị coi là vi phạm nghiêm trọng.",
+      "worst_metric": "answer_relevancy",
+      "score": 0.0,
+      "avg_score": 0.6667,
+      "metrics": {
+        "faithfulness": 0.6667,
+        "answer_relevancy": 0.0,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 1,
+      "diagnosis": "Answer doesn't match question — trả lời lạc đề hoặc quá chung chung",
+      "suggested_fix": "Sửa prompt template (yêu cầu trả lời trực tiếp, đúng đơn vị/con số), thêm few-shot example, xử lý riêng câu hỏi multi-hop / phủ định"
+    },
+    {
+      "question": "Một nhân viên Senior có 9 năm thâm niên được nghỉ bao nhiêu ngày phép năm và lương trong khoảng nào?",
+      "answer": "Một nhân viên Senior có 9 năm thâm niên sẽ được nghỉ 18 ngày phép năm (15 ngày cơ bản + 3 ngày cộng thêm từ thâm niên). Lương không được đề cập trong context.",
+      "ground_truth": "Theo chính sách v2024: 15 ngày cơ bản + 3 ngày thâm niên (9÷3=3) = 18 ngày phép. Lương Senior (P3-P4): 20-35 triệu VNĐ/tháng.",
+      "worst_metric": "faithfulness",
+      "score": 0.3333,
+      "avg_score": 0.6753,
+      "metrics": {
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.8678,
+        "context_precision": 1.0,
+        "context_recall": 0.5
+      },
+      "n_contexts": 2,
+      "diagnosis": "LLM hallucinating — câu trả lời chứa thông tin không có trong context",
+      "suggested_fix": "Siết prompt ('CHỈ dùng context, không suy đoán'), hạ temperature về 0, bắt LLM trích dẫn nguyên văn trước khi kết luận"
+    },
+    {
+      "question": "Nhân viên được tài trợ khóa học 25 triệu, nghỉ việc sau 8 tháng hoàn thành khóa học. Phải hoàn trả bao nhiêu?",
+      "answer": "Nhân viên phải hoàn trả **100% chi phí** đào tạo đã được tài trợ, tức là **25.000.000 VNĐ**.",
+      "ground_truth": "Nhân viên phải cam kết làm việc ít nhất 1 năm sau khi hoàn thành khóa học. Nghỉ sau 8 tháng là trước hạn cam kết, phải hoàn trả 100% chi phí tức 25.000.000 VNĐ.",
+      "worst_metric": "faithfulness",
+      "score": 0.5,
+      "avg_score": 0.6973,
+      "metrics": {
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.789,
+        "context_precision": 1.0,
+        "context_recall": 0.5
+      },
+      "n_contexts": 2,
+      "diagnosis": "LLM hallucinating — câu trả lời chứa thông tin không có trong context",
+      "suggested_fix": "Siết prompt ('CHỈ dùng context, không suy đoán'), hạ temperature về 0, bắt LLM trích dẫn nguyên văn trước khi kết luận"
+    },
+    {
+      "question": "Nghỉ phép không lương 20 ngày cần ai phê duyệt?",
+      "answer": "Nghỉ phép không lương 20 ngày cần phê duyệt của **Giám đốc điều hành (CEO)**.",
+      "ground_truth": "Nghỉ 16-30 ngày cần phê duyệt của Giám đốc điều hành (CEO). Lưu ý: nghỉ trên 14 ngày không lương, nhân viên phải tự đóng phần bảo hiểm của mình.",
+      "worst_metric": "faithfulness",
+      "score": 0.0,
+      "avg_score": 0.701,
+      "metrics": {
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.8041,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 3,
+      "diagnosis": "LLM hallucinating — câu trả lời chứa thông tin không có trong context",
+      "suggested_fix": "Siết prompt ('CHỈ dùng context, không suy đoán'), hạ temperature về 0, bắt LLM trích dẫn nguyên văn trước khi kết luận"
+    },
+    {
+      "question": "Nhân viên thử việc có được nghỉ phép năm không?",
+      "answer": "Nhân viên thử việc **KHÔNG được nghỉ phép năm**.",
+      "ground_truth": "KHÔNG. Nhân viên thử việc KHÔNG được nghỉ phép năm. Nếu cần nghỉ, phải xin nghỉ không lương và được trưởng phòng phê duyệt.",
+      "worst_metric": "answer_relevancy",
+      "score": 0.0,
+      "avg_score": 0.75,
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 3,
+      "diagnosis": "Answer doesn't match question — trả lời lạc đề hoặc quá chung chung",
+      "suggested_fix": "Sửa prompt template (yêu cầu trả lời trực tiếp, đúng đơn vị/con số), thêm few-shot example, xử lý riêng câu hỏi multi-hop / phủ định"
+    },
+    {
+      "question": "Nhân viên thử việc có được hưởng bảo hiểm sức khỏe PVI không?",
+      "answer": "Nhân viên thử việc chưa được hưởng gói bảo hiểm sức khỏe PVI.",
+      "ground_truth": "KHÔNG. Nhân viên thử việc chưa được hưởng gói bảo hiểm sức khỏe PVI. Chỉ được tham gia bảo hiểm xã hội bắt buộc.",
+      "worst_metric": "answer_relevancy",
+      "score": 0.0,
+      "avg_score": 0.75,
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 2,
+      "diagnosis": "Answer doesn't match question — trả lời lạc đề hoặc quá chung chung",
+      "suggested_fix": "Sửa prompt template (yêu cầu trả lời trực tiếp, đúng đơn vị/con số), thêm few-shot example, xử lý riêng câu hỏi multi-hop / phủ định"
+    },
+    {
+      "question": "Mentor và buddy của nhân viên mới có thể là cùng một người không? Quản lý trực tiếp có thể làm mentor không?",
+      "answer": "Mentor và buddy của nhân viên mới không thể là cùng một người. Quản lý trực tiếp không được làm mentor hoặc buddy.",
+      "ground_truth": "KHÔNG cho cả hai. Mentor và buddy phải là hai người khác nhau. Quản lý trực tiếp không được làm mentor hoặc buddy.",
+      "worst_metric": "answer_relevancy",
+      "score": 0.0,
+      "avg_score": 0.75,
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.0,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 1,
+      "diagnosis": "Answer doesn't match question — trả lời lạc đề hoặc quá chung chung",
+      "suggested_fix": "Sửa prompt template (yêu cầu trả lời trực tiếp, đúng đơn vị/con số), thêm few-shot example, xử lý riêng câu hỏi multi-hop / phủ định"
+    },
+    {
+      "question": "Nhân viên tạm ứng 15 triệu, sau 20 ngày mới thanh toán. Bị phạt bao nhiêu?",
+      "answer": "Nhân viên sẽ bị phạt 2% trên số tiền chưa hoàn ứng. Số tiền chưa hoàn ứng là 15 triệu VNĐ. \n\nPhạt = 15.000.000 VNĐ * 2% = 300.000 VNĐ.\n\nVì vậy, nhân viên sẽ bị phạt 300.000 VNĐ.",
+      "ground_truth": "Thời hạn thanh toán là 15 ngày. Quá hạn 5 ngày, bị tính phí 2%/tháng trên 15.000.000 VNĐ = 300.000 VNĐ/tháng (tính pro-rata khoảng 50.000 VNĐ cho 5 ngày).",
+      "worst_metric": "faithfulness",
+      "score": 0.25,
+      "avg_score": 0.7701,
+      "metrics": {
+        "faithfulness": 0.25,
+        "answer_relevancy": 0.8303,
+        "context_precision": 1.0,
+        "context_recall": 1.0
+      },
+      "n_contexts": 1,
+      "diagnosis": "LLM hallucinating — câu trả lời chứa thông tin không có trong context",
+      "suggested_fix": "Siết prompt ('CHỈ dùng context, không suy đoán'), hạ temperature về 0, bắt LLM trích dẫn nguyên văn trước khi kết luận"
+    },
+    {
+      "question": "Thâm niên bao nhiêu năm thì được cộng thêm ngày phép?",
+      "answer": "Trong chính sách nghỉ phép năm 2023, nhân viên có thâm niên từ 5 năm trở lên được cộng thêm 1 ngày phép cho mỗi 5 năm làm việc liên tục. Trong chính sách nghỉ phép năm 2024, nhân viên có thâm niên từ 3 năm trở lên được cộng thêm 1 ngày phép cho mỗi 3 năm làm việc liên tục.",
+      "ground_truth": "Theo chính sách v2024 hiện hành, nhân viên có thâm niên từ 3 năm trở lên được cộng thêm 1 ngày phép cho mỗi 3 năm. Chính sách cũ v2023 yêu cầu 5 năm.",
+      "worst_metric": "context_recall",
+      "score": 0.5,
+      "avg_score": 0.8113,
+      "metrics": {
+        "faithfulness": 1.0,
+        "answer_relevancy": 0.7452,
+        "context_precision": 1.0,
+        "context_recall": 0.5
+      },
+      "n_contexts": 2,
+      "diagnosis": "Missing relevant chunks — retrieval bỏ sót thông tin cần thiết",
+      "suggested_fix": "Tăng top_k, cải thiện chunking (hierarchical/structure-aware), thêm BM25 vào hybrid để bắt keyword hiếm, thêm HyQA enrichment"
+    }
+  ]
+}

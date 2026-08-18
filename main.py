@@ -36,7 +36,8 @@ def main():
     # Move reports to reports/
     for f in ["ragas_report.json", "naive_baseline_report.json"]:
         if os.path.exists(f):
-            os.rename(f, f"reports/{f}")
+            # os.replace ghi de file cu; os.rename se nem FileExistsError tren Windows
+            os.replace(f, f"reports/{f}")
 
     # Step 3: Comparison
     print("\n📌 STEP 3: Comparison")

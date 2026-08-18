@@ -13,6 +13,18 @@ from src.m4_eval import load_test_set, evaluate_ragas, failure_analysis, save_re
 from src.m5_enrichment import enrich_chunks
 from config import RERANK_TOP_K
 
+# Small-to-Big: key = "{source}::{parent_id}" -> parent text (2048 chars).
+# Search bang child (256 chars, precision cao) nhung dua parent vao context
+# (day du bang bieu / doan van) — dung nhu M1 mo ta: retrieve child -> return parent.
+_PARENT_MAP: dict[str, str] = {}
+
+
+def _parent_key(metadata: dict) -> str | None:
+    pid = metadata.get("parent_id")
+    if not pid:
+        return None
+    return f"{metadata.get('source', '')}::{pid}"
+
 
 def build_pipeline():
     """Build production RAG pipeline."""
@@ -25,8 +37,13 @@ def build_pipeline():
     print("\n[1/4] Chunking documents...", flush=True)
     docs = load_documents()
     all_chunks = []
+    _PARENT_MAP.clear()
     for doc in docs:
         parents, children = chunk_hierarchical(doc["text"], metadata=doc["metadata"])
+        for parent in parents:
+            key = _parent_key(parent.metadata)
+            if key:
+                _PARENT_MAP[key] = parent.text
         for child in children:
             all_chunks.append({"text": child.text, "metadata": {**child.metadata, "parent_id": child.parent_id}})
     print(f"  ✓ {len(all_chunks)} chunks from {len(docs)} documents ({time.time()-t0:.1f}s)", flush=True)
@@ -62,7 +79,19 @@ def run_query(query: str, search: HybridSearch, reranker: CrossEncoderReranker) 
     results = search.search(query)
     docs = [{"text": r.text, "score": r.score, "metadata": r.metadata} for r in results]
     reranked = reranker.rerank(query, docs, top_k=RERANK_TOP_K)
-    contexts = [r.text for r in reranked] if reranked else [r.text for r in results[:3]]
+    top = reranked if reranked else results[:3]
+
+    # Small-to-Big: mo rong moi child thanh parent chua no (neu tra duoc),
+    # dedupe vi nhieu child thuong tro ve cung 1 parent.
+    contexts, seen = [], set()
+    for r in top:
+        key = _parent_key(getattr(r, "metadata", {}) or {})
+        text = _PARENT_MAP.get(key) if key else None
+        if text is None:
+            text = r.text
+        if text not in seen:
+            seen.add(text)
+            contexts.append(text)
 
     from config import OPENAI_API_KEY
     if OPENAI_API_KEY and contexts:
